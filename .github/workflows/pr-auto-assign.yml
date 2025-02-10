@@ -17,7 +17,6 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Define users
-        id: define-users
         run: |
           touch auto_assign_users.txt
           echo "Younghan-J0" >> auto_assign_users.txt
@@ -25,7 +24,6 @@ jobs:
           echo "jo-younghan" >> auto_assign_users.txt
 
       - name: Filter out the PR author
-        id: filter-author
         run: |
           grep -v "^${{ github.actor }}$" auto_assign_users.txt > filtered_users.txt
 
@@ -44,10 +42,6 @@ jobs:
         run: |
           LABELS=$(gh pr view ${{ github.event.pull_request.number }} --json labels --jq '.labels | length')
           echo "LABELS_COUNT=$LABELS" >> "$GITHUB_OUTPUT"
-
-      - name: Debug labels
-        run: |
-          echo "LABELS_COUNT: ${{ steps.check-labels.outputs.LABELS_COUNT }}"
 
       - name: Add reviewer and assignee
         if: ${{ steps.check-assignees.outputs.ASSIGNEES_COUNT == 0 && steps.check-labels.outputs.LABELS_COUNT == 0 }}
