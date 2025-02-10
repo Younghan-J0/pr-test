@@ -50,11 +50,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Debug assign users
+        run: cat .github/auto_assign_users.txt
+
       - name: Filter out the PR author
         id: filter-author
         run: |
           grep -v "^${{ github.actor }}$" .github/auto_assign_users.txt > filtered_users.txt
-          echo "FILTERED_USERS=$(cat filtered_users.txt)" >> $GITHUB_ENV
+
+      - name: Debug filtered users
+        run: cat filtered_users.txt
 
       - name: Select a random user
         id: select-user
