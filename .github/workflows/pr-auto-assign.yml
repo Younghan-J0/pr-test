@@ -33,6 +33,11 @@ jobs:
         id: select-user
         run: echo "SELECTED_USER=$(shuf -n 1 filtered_users.txt)" >> "$GITHUB_OUTPUT"
 
+      - name: Debug selected user
+        id: debug-selected-user
+        run: |
+          echo "SELECTED_USER: ${{ steps.select-user.outputs.SELECTED_USER }}"
+
       - name: Check if assignees exist
         id: check-assignees
         run: |
