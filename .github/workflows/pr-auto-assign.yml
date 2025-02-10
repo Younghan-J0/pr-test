@@ -117,7 +117,7 @@ jobs:
 
       - name: Add reviewer and assignee
         run: |
-          gh pr review ${{ github.event.pull_request.number }} --add-reviewer $SELECTED_USER
+          gh pr edit ${{ github.event.pull_request.number }} --add-reviewer $SELECTED_USER
           gh pr edit ${{ github.event.pull_request.number }} --add-assignee $SELECTED_USER
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
