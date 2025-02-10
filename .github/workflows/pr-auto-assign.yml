@@ -35,6 +35,8 @@ jobs:
         run: |
           ASSIGNEES=$(gh pr view ${{ github.event.pull_request.number }} --json assignees --jq '.assignees | length')
           echo "ASSIGNEES_COUNT=$ASSIGNEES" >> $GITHUB_ENV
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Debug assignees count
         run: echo $ASSIGNEES_COUNT
