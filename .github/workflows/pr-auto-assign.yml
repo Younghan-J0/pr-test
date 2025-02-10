@@ -20,9 +20,6 @@ jobs:
           echo "YoungHan-Jo" >> auto_assign_users.txt
           echo "jo-younghan" >> auto_assign_users.txt
 
-      - name: Debug users
-        run: cat auto_assign_users.txt
-
       - name: Filter out the PR author
         id: filter-author
         run: |
@@ -31,12 +28,6 @@ jobs:
       - name: Select a random user
         id: select-user
         run: echo "SELECTED_USER=$(shuf -n 1 filtered_users.txt)" >> $GITHUB_ENV
-
-      - name: Debug selected user
-        run: echo $SELECTED_USER
-
-      - name: debug env user
-        run: echo ${{ env.SELECTED_USER }}
 
       - name: Check if assignees exist
         id: check-assignees
