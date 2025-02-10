@@ -17,9 +17,6 @@ jobs:
         run: |
           grep -v "^${{ github.actor }}$" .github/auto_assign_users.txt > filtered_users.txt
 
-      - name: Debug filtered users
-        run: cat filtered_users.txt
-
       - name: Select a random user
         id: select-user
         run: echo "SELECTED_USER=$(shuf -n 1 filtered_users.txt)" >> $GITHUB_ENV
@@ -37,9 +34,6 @@ jobs:
           echo "ASSIGNEES_COUNT=$ASSIGNEES" >> $GITHUB_ENV
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Debug assignees count
-        run: echo $ASSIGNEES_COUNT
 
       - name: Add reviewer and assignee
         if: env.ASSIGNEES_COUNT == '0'
