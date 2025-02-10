@@ -53,7 +53,7 @@ jobs:
       - name: Filter out the PR author
         id: filter-author
         run: |
-          grep -v "^${{ github.actor }}$" .github/auto_assign_users.txt > filtered_users.txt
+          grep -v "^${{ github.author }}$" .github/auto_assign_users.txt > filtered_users.txt
           echo "FILTERED_USERS=$(cat filtered_users.txt)" >> $GITHUB_ENV
 
       - name: Select a random user
