@@ -27,10 +27,12 @@ jobs:
 
       - name: Select a random user
         id: select-user
-        run: echo "SELECTED_USER=$(shuf -n 1 .github/auto_assign_users.txt)" >> $GITHUB_ENV
+        run: |
+          echo "SELECTED_USER=$(shuf -n 1 .github/auto_assign_users.txt)" >> $GITHUB_ENV
+          echo $SELECTED_USER
 
       - name: Add reviewer and assignee
-        uses: kentaro-m/auto-assign-action@v2.2.0
+        uses: kentaro-m/auto-assign-action@v2.0.0
         with:
           addReviewers: true
           addAssignees: true
