@@ -33,6 +33,7 @@ addAssignees: true
 reviewers:
   - Younghan-J0
   - YoungHan-Jo
+  - jo-younghan
 
 # Reviewersに追加するメンバ数を指定できます。
 # 追加メンバより設定数が少ない場合、ランダムで追加されます。
@@ -43,6 +44,7 @@ numberOfReviewers: 2
 assignees:
   - Younghan-J0
   - YoungHan-Jo
+  - jo-younghan
 
 # Assigneessに追加するメンバ数を指定できます。
 # 追加メンバより設定数が少ない場合、ランダムで追加されます。
