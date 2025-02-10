@@ -12,10 +12,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Define users
+        id: define-users
+        run: |
+          touch auto_assign_users.txt
+          echo "Younghan-J0" >> auto_assign_users.txt
+          echo "YoungHan-Jo" >> auto_assign_users.txt
+          echo "jo-younghan" >> auto_assign_users.txt
+
       - name: Filter out the PR author
         id: filter-author
         run: |
-          grep -v "^${{ github.actor }}$" .github/auto_assign_users.txt > filtered_users.txt
+          grep -v "^${{ github.actor }}$" auto_assign_users.txt > filtered_users.txt
 
       - name: Select a random user
         id: select-user
