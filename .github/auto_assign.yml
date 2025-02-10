@@ -1,0 +1,7 @@
+addReviewers: true
+addAssignees: true
+
+reviewers:
+  - ${{ env.SELECTED_USER }}
+assignees:
+  - ${{ env.SELECTED_USER }}

@@ -74,7 +74,4 @@ jobs:
       - name: Add reviewer and assignee
         uses: kentaro-m/auto-assign-action@v2.0.0
         with:
-          addReviewers: true
-          addAssignees: true
-          reviewers: ${{ env.SELECTED_USER }}
-          assignees: ${{ env.SELECTED_USER }}
+          configuration-path: .github/auto_assign.yml
