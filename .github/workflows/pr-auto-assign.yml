@@ -33,24 +33,24 @@ jobs:
         id: select-user
         run: echo "SELECTED_USER=$(shuf -n 1 filtered_users.txt)" >> "$GITHUB_OUTPUT"
 
-      - name: Debug selected user
-        id: debug-selected-user
-        run: |
-          echo "SELECTED_USER: ${{ steps.select-user.outputs.SELECTED_USER }}"
-
       - name: Check if assignees exist
         id: check-assignees
         run: |
           ASSIGNEES=$(gh pr view ${{ github.event.pull_request.number }} --json assignees --jq '.assignees | length')
           echo "ASSIGNEES_COUNT=$ASSIGNEES" >> "$GITHUB_OUTPUT"
 
-      - name: Debug count
-        id: debug-count
+      - name: Check if labels exist
+        id: check-labels
         run: |
-          echo "ASSIGNEES_COUNT: ${{ steps.check-assignees.outputs.ASSIGNEES_COUNT }}"
+          LABELS=$(gh pr view ${{ github.event.pull_request.number }} --json labels --jq '.labels | length')
+          echo "LABELS_COUNT=$LABELS" >> "$GITHUB_OUTPUT"
+
+      - name: Debug labels
+        run: |
+          echo "LABELS_COUNT: ${{ steps.check-labels.outputs.LABELS_COUNT }}"
 
       - name: Add reviewer and assignee
-        if: ${{ steps.check-assignees.outputs.ASSIGNEES_COUNT == 0 }}
+        if: ${{ steps.check-assignees.outputs.ASSIGNEES_COUNT == 0 }} && ${{ steps.check-labels.outputs.LABELS_COUNT == 0 }}
         run: |
           gh pr edit ${{ github.event.pull_request.number }} --add-reviewer ${{ steps.select-user.outputs.SELECTED_USER }}
           gh pr edit ${{ github.event.pull_request.number }} --add-assignee ${{ steps.select-user.outputs.SELECTED_USER }}
