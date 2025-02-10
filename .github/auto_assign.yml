@@ -38,7 +38,7 @@ reviewers:
 # Reviewersに追加するメンバ数を指定できます。
 # 追加メンバより設定数が少ない場合、ランダムで追加されます。
 # 0に設定すると全てのReviewersのメンバが追加されます。
-numberOfReviewers: 2
+numberOfReviewers: 1
 
 # Assigneesrに設定するメンバを追加します。
 assignees:
@@ -49,4 +49,4 @@ assignees:
 # Assigneessに追加するメンバ数を指定できます。
 # 追加メンバより設定数が少ない場合、ランダムで追加されます。
 # 0に設定すると全てのAssigneesのメンバが追加されます。
-numberOfAssignees: 2
+numberOfAssignees: 1
