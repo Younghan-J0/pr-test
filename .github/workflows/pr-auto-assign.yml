@@ -37,11 +37,50 @@
 #           reviewers: ${{ env.SELECTED_USER }}
 #           assignees: ${{ env.SELECTED_USER }}
 
+# name: Auto Assign
+
+# on:
+#   pull_request:
+#     types: [opened, ready_for_review]
+
+# jobs:
+#   auto-assign:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v2
+
+#       - name: Debug assign users
+#         run: cat .github/auto_assign_users.txt
+
+#       - name: Filter out the PR author
+#         id: filter-author
+#         run: |
+#           grep -v "^${{ github.actor }}$" .github/auto_assign_users.txt > filtered_users.txt
+
+#       - name: Debug filtered users
+#         run: cat filtered_users.txt
+
+#       - name: Select a random user
+#         id: select-user
+#         run: echo "SELECTED_USER=$(shuf -n 1 filtered_users.txt)" >> $GITHUB_ENV
+
+#       - name: Debug selected user
+#         run: echo $SELECTED_USER
+
+#       - name: debug env user
+#         run: echo ${{ env.SELECTED_USER }}
+
+#       - name: Add reviewer and assignee
+#         uses: kentaro-m/auto-assign-action@v2.0.0
+#         with:
+#           configuration-path: .github/auto_assign.yml
+
 name: Auto Assign
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, ready_for_review]
 
 jobs:
   auto-assign:
@@ -71,7 +110,14 @@ jobs:
       - name: debug env user
         run: echo ${{ env.SELECTED_USER }}
 
+      # - name: Add reviewer and assignee
+      #   uses: kentaro-m/auto-assign-action@v2.0.0
+      #   with:
+      #     configuration-path: .github/auto_assign.yml
+
       - name: Add reviewer and assignee
-        uses: kentaro-m/auto-assign-action@v2.0.0
-        with:
-          configuration-path: .github/auto_assign.yml
+        run: |
+          gh pr review ${{ github.event.pull_request.number }} --add-reviewer $SELECTED_USER
+          gh pr edit ${{ github.event.pull_request.number }} --add-assignee $SELECTED_USER
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
