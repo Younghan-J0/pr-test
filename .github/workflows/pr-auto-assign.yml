@@ -65,6 +65,12 @@ jobs:
         id: select-user
         run: echo "SELECTED_USER=$(shuf -n 1 filtered_users.txt)" >> $GITHUB_ENV
 
+      - name: Debug selected user
+        run: echo $SELECTED_USER
+
+      - name: debug env user
+        run: echo ${{ env.SELECTED_USER }}
+
       - name: Add reviewer and assignee
         uses: kentaro-m/auto-assign-action@v2.0.0
         with:
