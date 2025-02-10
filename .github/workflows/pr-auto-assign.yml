@@ -8,6 +8,10 @@ jobs:
   auto-assign:
     if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -27,20 +31,21 @@ jobs:
 
       - name: Select a random user
         id: select-user
-        run: echo "SELECTED_USER=$(shuf -n 1 filtered_users.txt)" >> $GITHUB_ENV
+        run: echo "SELECTED_USER=$(shuf -n 1 filtered_users.txt)" >> "$GITHUB_OUTPUT"
 
       - name: Check if assignees exist
         id: check-assignees
         run: |
           ASSIGNEES=$(gh pr view ${{ github.event.pull_request.number }} --json assignees --jq '.assignees | length')
-          echo "ASSIGNEES_COUNT=$ASSIGNEES" >> $GITHUB_ENV
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          echo "ASSIGNEES_COUNT=$ASSIGNEES" >> "$GITHUB_OUTPUT"
+
+      - name: Debug count
+        id: debug-count
+        run: |
+          echo "ASSIGNEES_COUNT: ${{ steps.check-assignees.outputs.ASSIGNEES_COUNT }}"
 
       - name: Add reviewer and assignee
-        if: env.ASSIGNEES_COUNT == '0'
+        if: ${{ steps.check-assignees.outputs.ASSIGNEES_COUNT == 0 }}
         run: |
-          gh pr edit ${{ github.event.pull_request.number }} --add-reviewer $SELECTED_USER
-          gh pr edit ${{ github.event.pull_request.number }} --add-assignee $SELECTED_USER
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          gh pr edit ${{ github.event.pull_request.number }} --add-reviewer ${{ steps.select-user.outputs.SELECTED_USER }}
+          gh pr edit ${{ github.event.pull_request.number }} --add-assignee ${{ steps.select-user.outputs.SELECTED_USER }}
