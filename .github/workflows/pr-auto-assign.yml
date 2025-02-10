@@ -89,9 +89,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Debug assign users
-        run: cat .github/auto_assign_users.txt
-
       - name: Filter out the PR author
         id: filter-author
         run: |
