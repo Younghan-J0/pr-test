@@ -30,7 +30,17 @@ jobs:
       - name: debug env user
         run: echo ${{ env.SELECTED_USER }}
 
+      - name: Check if assignees exist
+        id: check-assignees
+        run: |
+          ASSIGNEES=$(gh pr view ${{ github.event.pull_request.number }} --json assignees --jq '.assignees | length')
+          echo "ASSIGNEES_COUNT=$ASSIGNEES" >> $GITHUB_ENV
+
+      - name: Debug assignees count
+        run: echo $ASSIGNEES_COUNT
+
       - name: Add reviewer and assignee
+        if: env.ASSIGNEES_COUNT == '0'
         run: |
           gh pr edit ${{ github.event.pull_request.number }} --add-reviewer $SELECTED_USER
           gh pr edit ${{ github.event.pull_request.number }} --add-assignee $SELECTED_USER
